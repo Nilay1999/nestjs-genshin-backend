@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE")
+}
+
+model skill {
+  id              Int         @id @default(autoincrement())
+  normal_attack   String
+  elemental_skill String
+  elemental_burst String
+  character       character[]
+}
+
+model passive_talent {
+  id                     Int         @id @default(autoincrement())
+  default_passive_talent String
+  ascension_1_talent     String
+  ascension_2_talent     String
+  character              character[]
+}
+
+model character {
+  id               Int            @id @default(autoincrement())
+  created_at       DateTime       @default(now())
+  updated_at       DateTime       @updatedAt
+  name             String
+  element          String
+  weapon_type      String
+  region           String
+  rarity           Int
+  gender           String
+  skillId          Int
+  passive_talentId Int
+  passive_talent   passive_talent @relation(fields: [passive_talentId], references: [id])
+  skills           skill          @relation(fields: [skillId], references: [id])
+  image            String?
+  deleted          Boolean        @default(false)
+}
+
+model weapon {
+  id              Int     @id @default(autoincrement())
+  weapon_type     String
+  rarity          Int
+  name            String
+  base_attack     Int
+  secondary_state String
+  passive         String
+  bonus           String
+  location        String
+  image           String?
+  deleted         Boolean @default(false)
+}
+
+model artifact {
+  id               Int     @id @default(autoincrement())
+  name             String
+  two_piece_bonus  String
+  four_piece_bonus String
+  max_rarity       Int
+  deleted          Boolean @default(false)
+}
+
+enum Region {
+  liyue
+  mondstadt
+  inazuma
+}

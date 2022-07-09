@@ -1,0 +1,126 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Passive {
+  id: Float!
+  default_passive_talent: String!
+  ascension_1_talent: String!
+  ascension_2_talent: String!
+}
+
+type Skill {
+  id: Float!
+  normal_attack: String!
+  elemental_skill: String!
+  elemental_burst: String!
+}
+
+type Character {
+  id: Float!
+  name: String!
+  element: String!
+  weapon_type: String!
+  region: String!
+  rarity: Float!
+  gender: String!
+  skills: Skill!
+  passive_talent: Passive!
+  image: String
+}
+
+type Weapon {
+  id: Float!
+  name: String!
+  weapon_type: String!
+  rarity: Float!
+  passive: String!
+  bonus: String!
+  location: String!
+  base_attack: Float!
+  secondary_state: String!
+  image: String
+}
+
+type Query {
+  getCharacterById(character_id: Float!): Character!
+  getAllCharacters: [Character!]!
+  getWeaponById(weapon_id: Float!): Weapon!
+  getAllWeapon: [Weapon!]!
+}
+
+type Mutation {
+  addCharacter(data: CharacterInput!): Character!
+  updateCharacter(data: CharacterUpdateInput!, id: Float!): Character!
+  deleteCharacter(character_id: Float!): Character!
+  addWeapon(input: WeaponInput!): Weapon!
+  updateWeapon(data: WeaponUpdateInput!, id: Float!): Weapon!
+}
+
+input CharacterInput {
+  name: String!
+  element: String!
+  weapon_type: String!
+  gender: String!
+  region: String!
+  rarity: Float!
+  skills: SkillInput!
+  talents: TalentInput!
+}
+
+input SkillInput {
+  normal_attack: String!
+  elemental_skill: String!
+  elemental_burst: String!
+}
+
+input TalentInput {
+  default_passive_talent: String!
+  ascension_1_talent: String!
+  ascension_2_talent: String!
+}
+
+input CharacterUpdateInput {
+  name: String
+  element: String
+  weapon_type: String
+  gender: String
+  region: String
+  rarity: Float
+  skills: SkillUpdateInput
+  talents: TalentUpdateInput
+}
+
+input SkillUpdateInput {
+  normal_attack: String
+  elemental_skill: String
+  elemental_burst: String
+}
+
+input TalentUpdateInput {
+  default_passive_talent: String
+  ascension_1_talent: String
+  ascension_2_talent: String
+}
+
+input WeaponInput {
+  name: String!
+  weaponType: String!
+  rarity: Float!
+  passive: String!
+  bonus: String!
+  location: String!
+  baseAttack: Float!
+  secondaryState: String!
+}
+
+input WeaponUpdateInput {
+  name: String
+  weaponType: String
+  rarity: Float
+  passive: String
+  bonus: String
+  location: String
+  baseAttack: Float
+  secondaryState: String
+}
