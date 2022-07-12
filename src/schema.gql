@@ -42,6 +42,19 @@ type Weapon {
   image: String
 }
 
+type UserModel {
+  id: String!
+  username: String!
+  email: String!
+  password: String!
+  role: String!
+}
+
+type AuthModel {
+  token: String!
+  user: UserModel!
+}
+
 type Query {
   getCharacterById(character_id: Float!): Character!
   getAllCharacters: [Character!]!
@@ -55,6 +68,7 @@ type Mutation {
   deleteCharacter(character_id: Float!): Character!
   addWeapon(input: WeaponInput!): Weapon!
   updateWeapon(data: WeaponUpdateInput!, id: Float!): Weapon!
+  login(email: String!, password: String!): AuthModel!
 }
 
 input CharacterInput {

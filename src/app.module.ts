@@ -9,6 +9,7 @@ import { WeaponModule } from './weapon/weapon.module';
 import { GraphQLError, GraphQLFormattedError } from 'graphql';
 import { ApolloError } from 'apollo-server-express';
 import { MulterModule } from '@nestjs/platform-express';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { MulterModule } from '@nestjs/platform-express';
       },
     }),
     WeaponModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

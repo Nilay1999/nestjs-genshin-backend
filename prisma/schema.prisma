@@ -7,6 +7,14 @@ datasource db {
   url      = env("DATABASE")
 }
 
+model user {
+  id       Int    @id @default(autoincrement())
+  username String
+  email    String
+  password String
+  role     String
+}
+
 model skill {
   id              Int         @id @default(autoincrement())
   normal_attack   String
