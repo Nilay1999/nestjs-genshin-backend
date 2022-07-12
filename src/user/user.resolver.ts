@@ -3,6 +3,7 @@ import { Args, Query } from '@nestjs/graphql';
 import { Mutation, Resolver } from '@nestjs/graphql';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from 'src/auth/auth.service';
+import { UserInput } from './user-dto/user.input';
 import { UserModel } from './user.model';
 import { UserService } from './user.service';
 
@@ -13,15 +14,8 @@ export class UserResolver {
     private readonly authService: AuthService,
   ) {}
 
-  // @Query()
-  // async getUserById() {}
-
-  // @Query()
-  // async getUsers() {}
-
-  // @Mutation(() => UserModel)
-  // async login() {}
-
-  // @Mutation()
-  // async register() {}
+  @Mutation(() => UserModel)
+  async register(@Args('input') userInput: UserInput) {
+    return this.userService.registerUser(userInput);
+  }
 }

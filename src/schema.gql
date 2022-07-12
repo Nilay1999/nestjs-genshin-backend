@@ -43,11 +43,11 @@ type Weapon {
 }
 
 type UserModel {
-  id: String!
+  id: Float!
   username: String!
   email: String!
   password: String!
-  role: String!
+  role: String
 }
 
 type AuthModel {
@@ -69,6 +69,7 @@ type Mutation {
   addWeapon(input: WeaponInput!): Weapon!
   updateWeapon(data: WeaponUpdateInput!, id: Float!): Weapon!
   login(email: String!, password: String!): AuthModel!
+  register(input: UserInput!): UserModel!
 }
 
 input CharacterInput {
@@ -137,4 +138,11 @@ input WeaponUpdateInput {
   location: String
   baseAttack: Float
   secondaryState: String
+}
+
+input UserInput {
+  username: String!
+  email: String!
+  password: String!
+  role: Float
 }
