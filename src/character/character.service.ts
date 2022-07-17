@@ -31,6 +31,9 @@ export class CharacterService {
   async getAllCharacters() {
     try {
       const characters = await this.prisma.character.findMany({
+        orderBy: {
+          id: 'asc',
+        },
         where: { deleted: false },
         include: {
           skills: {

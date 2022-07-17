@@ -27,6 +27,7 @@ type Character {
   skills: Skill!
   passive_talent: Passive!
   image: String
+  banner_image: String
 }
 
 type Weapon {
@@ -60,6 +61,7 @@ type Query {
   getAllCharacters: [Character!]!
   getWeaponById(weapon_id: Float!): Weapon!
   getAllWeapon: [Weapon!]!
+  getUsers: [UserModel!]!
 }
 
 type Mutation {
@@ -69,7 +71,8 @@ type Mutation {
   addWeapon(input: WeaponInput!): Weapon!
   updateWeapon(data: WeaponUpdateInput!, id: Float!): Weapon!
   login(email: String!, password: String!): AuthModel!
-  register(input: UserInput!): UserModel!
+  registerUser(input: UserInput!): UserModel!
+  updateUser(input: UpdateUserDto!, id: Float!): UserModel!
 }
 
 input CharacterInput {
@@ -145,4 +148,10 @@ input UserInput {
   email: String!
   password: String!
   role: Float
+}
+
+input UpdateUserDto {
+  username: String
+  email: String
+  password: String
 }

@@ -19,7 +19,7 @@ export class CharacterController {
     private readonly prismaService: PrismaService,
   ) {}
 
-  @Post('/upload/:id')
+  @Post('/upload-image/:id')
   @UseInterceptors(FileInterceptor('file'))
   async uploadCharacterImage(@Param('id') id, @UploadedFile() file) {
     const fileStream = createReadStream(file.path);
@@ -31,6 +31,25 @@ export class CharacterController {
     return await this.prismaService.character.update({
       where: { id: parseInt(id) },
       data: { image: fileLocation.Location },
+      include: {
+        skills: true,
+        passive_talent: true,
+      },
+    });
+  }
+
+  @Post('/upload-banner/:id')
+  @UseInterceptors(FileInterceptor('banner'))
+  async uploadCharacterBanner(@Param('id') id, @UploadedFile() file) {
+    const fileStream = createReadStream(file.path);
+    const fileLocation = await this.awsService.uploadImage(
+      fileStream,
+      file.filename,
+    );
+
+    return await this.prismaService.character.update({
+      where: { id: parseInt(id) },
+      data: { banner_image: fileLocation.Location },
       include: {
         skills: true,
         passive_talent: true,

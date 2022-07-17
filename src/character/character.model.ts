@@ -33,4 +33,7 @@ export class Character {
 
   @Field((type) => String, { nullable: true })
   image: string;
+
+  @Field((type) => String, { nullable: true })
+  banner_image: string;
 }

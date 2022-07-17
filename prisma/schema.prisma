@@ -46,6 +46,7 @@ model character {
   passive_talent   passive_talent @relation(fields: [passive_talentId], references: [id])
   skills           skill          @relation(fields: [skillId], references: [id])
   image            String?
+  banner_image     String?
   deleted          Boolean        @default(false)
 }
 
