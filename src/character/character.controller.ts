@@ -2,15 +2,13 @@ import {
   Controller,
   Param,
   Post,
-  UploadedFile,
+  UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { createReadStream } from 'fs';
-import { diskStorage } from 'multer';
 import { PrismaService } from 'src/prisma.service';
 import { AwsService } from './aws.service';
-import { CharacterService } from './character.service';
 
 @Controller('character')
 export class CharacterController {
@@ -19,37 +17,37 @@ export class CharacterController {
     private readonly prismaService: PrismaService,
   ) {}
 
-  @Post('/upload-image/:id')
-  @UseInterceptors(FileInterceptor('file'))
-  async uploadCharacterImage(@Param('id') id, @UploadedFile() file) {
-    const fileStream = createReadStream(file.path);
-    const fileLocation = await this.awsService.uploadImage(
-      fileStream,
-      file.filename,
+  @Post('/upload/:id')
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'avatar', maxCount: 1 },
+      { name: 'background', maxCount: 1 },
+    ]),
+  )
+  async uploadCharacterImage(
+    @Param('id') id,
+    @UploadedFiles()
+    files: {
+      avatar?: Express.Multer.File[];
+      background?: Express.Multer.File[];
+    },
+  ) {
+    const imageStream = createReadStream(files.avatar[0].path);
+    const imageFileLocation = await this.awsService.uploadImage(
+      imageStream,
+      files.avatar[0].filename,
     );
-
+    const bannerStream = createReadStream(files.background[0].path);
+    const bannerFileLocation = await this.awsService.uploadImage(
+      bannerStream,
+      files.background[0].filename,
+    );
     return await this.prismaService.character.update({
       where: { id: parseInt(id) },
-      data: { image: fileLocation.Location },
-      include: {
-        skills: true,
-        passive_talent: true,
+      data: {
+        image: imageFileLocation.Location,
+        banner_image: bannerFileLocation.Location,
       },
-    });
-  }
-
-  @Post('/upload-banner/:id')
-  @UseInterceptors(FileInterceptor('banner'))
-  async uploadCharacterBanner(@Param('id') id, @UploadedFile() file) {
-    const fileStream = createReadStream(file.path);
-    const fileLocation = await this.awsService.uploadImage(
-      fileStream,
-      file.filename,
-    );
-
-    return await this.prismaService.character.update({
-      where: { id: parseInt(id) },
-      data: { banner_image: fileLocation.Location },
       include: {
         skills: true,
         passive_talent: true,
