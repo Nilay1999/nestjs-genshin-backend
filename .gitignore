@@ -3,6 +3,7 @@
 /node_modules
 .env
 .env.development
+package-lock.json
 /uploads
 
 # Logs
