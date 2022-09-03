@@ -19,6 +19,6 @@ async function bootstrap() {
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     region: process.env.AWS_REGION,
   });
-  await app.listen(3000);
+  await app.listen(process.env.PORT);
 }
 bootstrap();
