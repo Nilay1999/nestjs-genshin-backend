@@ -1,10 +1,9 @@
-import { Mutation, Parent, Query, ResolveField } from '@nestjs/graphql';
-import { Args, Resolver } from '@nestjs/graphql';
+import { Mutation, Query, Args, Resolver } from '@nestjs/graphql';
+import { CharacterFilterDto } from './character-dto/character-filter.dto';
 import { CharacterUpdateInput } from './character-dto/character-update.input';
 import { CharacterInput } from './character-dto/character.input';
 import { Character } from './character.model';
 import { CharacterService } from './character.service';
-import { Passive } from './sub-models/passive.model';
 
 @Resolver(() => Character)
 export class CharacterResolver {
@@ -16,8 +15,10 @@ export class CharacterResolver {
   }
 
   @Query(() => [Character])
-  async getAllCharacters() {
-    return this.characterService.getAllCharacters();
+  async getAllCharacters(
+    @Args('query', { nullable: true }) query: CharacterFilterDto,
+  ) {
+    return this.characterService.getAllCharacters(query);
   }
 
   @Mutation(() => Character)

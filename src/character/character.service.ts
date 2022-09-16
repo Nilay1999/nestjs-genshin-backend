@@ -28,33 +28,40 @@ export class CharacterService {
     }
   }
 
-  async getAllCharacters() {
+  async getAllCharacters(queryFilter) {
+    let characters;
     try {
-      const characters = await this.prisma.character.findMany({
+      characters = await this.prisma.character.findMany({
         orderBy: {
           id: 'asc',
         },
         where: { deleted: false },
         include: {
-          skills: {
-            select: {
-              id: true,
-              elemental_burst: true,
-              elemental_skill: true,
-              normal_attack: true,
-            },
-          },
-          passive_talent: {
-            select: {
-              id: true,
-              ascension_1_talent: true,
-              ascension_2_talent: true,
-              default_passive_talent: true,
-            },
-          },
+          passive_talent: true,
+          skills: true,
         },
       });
-      return characters;
+
+      if (queryFilter) {
+        const { element, weapon_type, gender, rarity } = queryFilter;
+        if (element) {
+          characters = characters.filter((value) => value.element == element);
+        }
+        if (weapon_type) {
+          characters = characters.filter(
+            (value) => value.weapon_type == weapon_type,
+          );
+        }
+        if (gender) {
+          characters = characters.filter((value) => value.gender == gender);
+        }
+        if (rarity) {
+          characters = characters.filter((value) => value.rarity == rarity);
+        }
+        return characters;
+      } else {
+        return characters;
+      }
     } catch (error) {
       throw new Error(error);
     }

@@ -58,10 +58,17 @@ type AuthModel {
 
 type Query {
   getCharacterById(character_id: Float!): Character!
-  getAllCharacters: [Character!]!
+  getAllCharacters(query: CharacterFilterDto): [Character!]!
   getWeaponById(weapon_id: Float!): Weapon!
   getAllWeapon: [Weapon!]!
   getUsers: [UserModel!]!
+}
+
+input CharacterFilterDto {
+  element: String
+  weapon_type: String
+  gender: String
+  rarity: Float
 }
 
 type Mutation {
